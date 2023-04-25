@@ -5,11 +5,11 @@ description = ""
 authors = ["ijknabla <ijknabla@gmail.com>"]
 license = "MIT"
 packages = [
-    { include = "omr" },
+    { include = "omrun" },
 ]
 
 [tool.poetry.scripts]
-omr = "omr:main"
+OMRun = "omrun:main"
 
 [tool.poetry.dependencies]
 python = "~3.10"
