@@ -2,6 +2,9 @@ import sys
 from asyncio import Task, get_running_loop
 from collections.abc import Callable, Coroutine
 from functools import wraps
+from getpass import getuser
+from pathlib import Path
+from tempfile import gettempdir
 from typing import Any, ParamSpec, TypeVar, cast
 
 from PySide6.QtCore import Slot
@@ -31,3 +34,10 @@ def _done_callback(task: Task[_T]) -> None:
         task.result()
     except Exception:
         sys.excepthook(*sys.exc_info())
+
+
+def get_omedit_work_directory() -> Path:
+    if sys.platform == "win32":
+        raise NotImplementedError()
+    else:
+        return Path(gettempdir()) / f"OpenModelica_{getuser()}" / "OMEdit"
