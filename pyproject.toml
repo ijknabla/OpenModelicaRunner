@@ -28,13 +28,15 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
+extend-exclude = "^/omrun/ui/.*\\.py$"
 
 [tool.flake8]
-exclude = '.venv,.git'
+exclude = '.venv,.git,omrun/ui'
 max-line-length = 100
 
 [tool.isort]
 profile = "black"
+skip_glob = "omrun/ui/*.py"
 line_length = 100
 
 [tool.mypy]
