@@ -14,7 +14,22 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="centralLayout"/>
+   <layout class="QGridLayout" name="centralLayout">
+    <item row="0" column="0">
+     <widget class="QTreeWidget" name="modelTree">
+      <column>
+       <property name="text">
+        <string>model</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>&#160;</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

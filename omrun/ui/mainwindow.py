@@ -15,8 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QMainWindow, QMenuBar,
-    QSizePolicy, QStatusBar, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
+    QMenuBar, QSizePolicy, QStatusBar, QTreeWidget,
+    QTreeWidgetItem, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -27,6 +28,11 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralLayout = QGridLayout(self.centralwidget)
         self.centralLayout.setObjectName(u"centralLayout")
+        self.modelTree = QTreeWidget(self.centralwidget)
+        self.modelTree.setObjectName(u"modelTree")
+
+        self.centralLayout.addWidget(self.modelTree, 0, 0, 1, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -43,5 +49,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        ___qtreewidgetitem = self.modelTree.headerItem()
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"\u00a0", None));
+        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"model", None));
     # retranslateUi
 
