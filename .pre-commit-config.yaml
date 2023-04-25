@@ -12,29 +12,22 @@ repos:
     -   id: check-added-large-files
 -   repo: local
     hooks:
-    -   id: poetry-black
+    -   id: black
         name: Format python code by black
-        entry: poetry
+        entry: .venv/bin/black
         args:
-        -   run
-        -   black
         -   .
         language: system
         pass_filenames: false
-    -   id: poetry-isort
+    -   id: isort
         name: Format python code by isort
-        entry: poetry
+        entry: .venv/bin/isort
         args:
-        -   run
-        -   isort
         -   .
         language: system
         pass_filenames: false
-    -   id: poetry-pflake8
+    -   id: pflake8
         name: Check python code by pflake8
-        entry: poetry
-        args:
-        -   run
-        -   pflake8
+        entry: .venv/bin/pflake8
         language: system
         pass_filenames: false
