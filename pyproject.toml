@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "openmodelicarunner"
+version = "0.0.0"
+description = ""
+authors = ["ijknabla <ijknabla@gmail.com>"]
+license = "MIT"
+packages = [
+    { include = "omr" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
