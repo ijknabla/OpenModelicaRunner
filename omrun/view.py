@@ -1,7 +1,8 @@
 import sys
-from asyncio import set_event_loop
+from asyncio import create_subprocess_exec, set_event_loop
 from collections.abc import Iterable
 from contextlib import suppress
+from functools import partial
 from itertools import chain
 from pathlib import Path
 from typing import ClassVar
@@ -17,7 +18,7 @@ from PySide6.QtWidgets import (
 )
 from qasync import QEventLoop
 
-from . import BuiltModel, get_omedit_work_directory
+from . import AsyncSlot, BuiltModel, get_omedit_work_directory
 from .ui.mainwindow import Ui_MainWindow
 
 
@@ -75,7 +76,18 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             item.setText(0, key[-1])
 
             if builtmodel is not None:
-                tree.setItemWidget(item, 1, QPushButton())
+                button = QPushButton()
+
+                @AsyncSlot()
+                async def clicked(builtmodel: BuiltModel) -> None:
+                    process = await create_subprocess_exec(
+                        f"{builtmodel.executable}", cwd=builtmodel.directory
+                    )
+                    await process.wait()
+                    print(f"{builtmodel.executable} done!")
+
+                button.clicked.connect(partial(clicked, builtmodel))
+                tree.setItemWidget(item, 1, button)
 
             elements[key] = item
             return item
