@@ -323,6 +323,18 @@ files = [
 shiboken6 = "6.5.0"
 
 [[package]]
+name = "qasync"
+version = "0.24.0"
+description = "Implementation of the PEP 3156 Event-Loop with Qt."
+category = "main"
+optional = false
+python-versions = "~=3.6"
+files = [
+    {file = "qasync-0.24.0-py3-none-any.whl", hash = "sha256:a2baba622bed24c90179faae8f902dd0d2a9b01c82342f40b1149723182e0160"},
+    {file = "qasync-0.24.0.tar.gz", hash = "sha256:e583d1c3ae20fd12e908dee358c527709b480e78d57fb72ee57a94097307d959"},
+]
+
+[[package]]
 name = "shiboken6"
 version = "6.5.0"
 description = "Python/C++ bindings helper module"
@@ -365,4 +377,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10"
-content-hash = "acde8826349cbbe8d741d1d494eecb0fc4407c7b87a31bf4582e2b1a72148c0b"
+content-hash = "3e8ad12a245e5a1e9729734b372938fe88e727aea1511d86ab7da47c295ea885"
