@@ -26,6 +26,17 @@ def find_free_port() -> int:
         return cast(int, s.getsockname()[1])
 
 
+def bg(f_co: Callable[_P, Coroutine[Any, Any, _T]]) -> Callable[_P, Task[_T]]:
+    @wraps(f_co)
+    def wrapper(*args: _P.args, **kwargs: _P.kwargs) -> Task[_T]:
+        loop = get_running_loop()
+        task = loop.create_task(f_co(*args, **kwargs))
+        task.add_done_callback(_done_callback)
+        return task
+
+    return wrapper
+
+
 def AsyncSlot(
     *args0: Any, **kwargs0: Any
 ) -> Callable[[Callable[_P, Coroutine[Any, Any, _T]]], Callable[_P, None]]:
