@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 )
 from qasync import QEventLoop
 
-from . import AsyncSlot, BuiltModel, get_omedit_work_directory
+from . import AsyncSlot, BuiltModel, find_free_port, get_omedit_work_directory
 from .ui.mainwindow import Ui_MainWindow
 
 
@@ -80,8 +80,9 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
                 @AsyncSlot()
                 async def clicked(builtmodel: BuiltModel) -> None:
+                    port = find_free_port()
                     process = await create_subprocess_exec(
-                        f"{builtmodel.executable}", cwd=builtmodel.directory
+                        f"{builtmodel.executable}", f"-port={port}", cwd=builtmodel.directory
                     )
                     await process.wait()
                     print(f"{builtmodel.executable} done!")
