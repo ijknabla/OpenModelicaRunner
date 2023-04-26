@@ -24,10 +24,13 @@
       </column>
       <column>
        <property name="text">
-        <string>&#160;</string>
+        <string> </string>
        </property>
       </column>
      </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QListWidget" name="processWidget"/>
     </item>
    </layout>
   </widget>
