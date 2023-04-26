@@ -38,6 +38,6 @@ def _done_callback(task: Task[_T]) -> None:
 
 def get_omedit_work_directory() -> Path:
     if sys.platform == "win32":
-        raise NotImplementedError()
+        return Path.home() / "AppData" / "Local" / "Temp" / "OpenModelica" / "OMEdit"
     else:
         return Path(gettempdir()) / f"OpenModelica_{getuser()}" / "OMEdit"
