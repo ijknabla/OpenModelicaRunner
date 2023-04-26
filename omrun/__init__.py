@@ -26,6 +26,15 @@ def find_free_port() -> int:
         return cast(int, s.getsockname()[1])
 
 
+def AsyncSlot(
+    *args: Any, **kwargs: Any
+) -> Callable[[Callable[_P, Coroutine[Any, Any, _T]]], Callable[_P, Task[_T]]]:
+    def decorator(f: Callable[_P, Coroutine[Any, Any, _T]]) -> Callable[_P, Task[_T]]:
+        return cast(Callable[_P, Task[_T]], Slot(*args, **kwargs)(bg(f)))
+
+    return decorator
+
+
 def bg(f_co: Callable[_P, Coroutine[Any, Any, _T]]) -> Callable[_P, Task[_T]]:
     @wraps(f_co)
     def wrapper(*args: _P.args, **kwargs: _P.kwargs) -> Task[_T]:
@@ -35,22 +44,6 @@ def bg(f_co: Callable[_P, Coroutine[Any, Any, _T]]) -> Callable[_P, Task[_T]]:
         return task
 
     return wrapper
-
-
-def AsyncSlot(
-    *args0: Any, **kwargs0: Any
-) -> Callable[[Callable[_P, Coroutine[Any, Any, _T]]], Callable[_P, None]]:
-    def decorator(f: Callable[_P, Coroutine[Any, Any, _T]]) -> Callable[_P, None]:
-        @Slot(*args0, **kwargs0)
-        @wraps(f)
-        def wrapper(*args1: _P.args, **kwargs1: _P.kwargs) -> None:
-            loop = get_running_loop()
-            task = loop.create_task(f(*args1, **kwargs1))
-            task.add_done_callback(_done_callback)
-
-        return cast(Callable[_P, None], wrapper)
-
-    return decorator
 
 
 def _done_callback(task: Task[_T]) -> None:
