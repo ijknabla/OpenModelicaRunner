@@ -1,4 +1,4 @@
-import os
+import sys
 from typing import Any
 
 from PySide6.QtWidgets import QApplication
@@ -18,7 +18,7 @@ from ._unix import _SelectorEventLoop  # noqa
 
 class QSelectorEventLoop(_QEventLoop, _SelectorEventLoop): ...
 
-if os.name == "nt":
+if sys.platform == "win32":
     from ._windows import _ProactorEventLoop
 
     class QIOCPEventLoop(_QEventLoop, _ProactorEventLoop): ...

@@ -1,3 +1,5 @@
 import asyncio
+import sys
 
-class _ProactorEventLoop(asyncio.ProactorEventLoop): ...
+if sys.platform == "win32":
+    class _ProactorEventLoop(asyncio.ProactorEventLoop): ...
