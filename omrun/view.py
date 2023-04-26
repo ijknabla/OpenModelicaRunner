@@ -54,6 +54,9 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             self.modelTree, chain.from_iterable(map(BuiltModel.from_directory, directory.iterdir()))
         )
 
+        self.modelTree.expandAll()
+        self.modelTree.resizeColumnToContents(0)
+
     @staticmethod
     def add_builtmodels(tree: QTreeWidget, builtmodels: Iterable[BuiltModel]) -> None:
         elements: dict[tuple[str, ...], QTreeWidget | QTreeWidgetItem]
