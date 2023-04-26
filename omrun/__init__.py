@@ -1,7 +1,9 @@
 import re
+import socket
 import sys
 from asyncio import Task, get_running_loop
 from collections.abc import Callable, Coroutine, Iterator
+from contextlib import closing
 from dataclasses import dataclass
 from functools import wraps
 from getpass import getuser
@@ -15,6 +17,13 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 _P = ParamSpec("_P")
 _T = TypeVar("_T")
+
+
+def find_free_port() -> int:
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+        s.bind(("localhost", 0))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return cast(int, s.getsockname()[1])
 
 
 def AsyncSlot(
