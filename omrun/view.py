@@ -3,10 +3,12 @@ import sys
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
 
+from . import unasync
 from .ui.mainwindow import Ui_MainWindow
 
 
-def main() -> None:
+@unasync
+async def main() -> None:
     app = QApplication()
     mainwindow = MainWindow()
     mainwindow.show()
