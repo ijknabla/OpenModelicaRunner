@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 )
 from qasync import QEventLoop
 
-from . import AsyncSlot, BuiltModel, find_free_port, get_omedit_work_directory
+from . import BuiltModel, bg, find_free_port, get_omedit_work_directory
 from .ui.mainwindow import Ui_MainWindow
 
 
@@ -77,17 +77,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
             if builtmodel is not None:
                 button = QPushButton()
-
-                @AsyncSlot()
-                async def clicked(builtmodel: BuiltModel) -> None:
-                    port = find_free_port()
-                    process = await create_subprocess_exec(
-                        f"{builtmodel.executable}", f"-port={port}", cwd=builtmodel.directory
-                    )
-                    await process.wait()
-                    print(f"{builtmodel.executable} done!")
-
-                button.clicked.connect(partial(clicked, builtmodel))
+                button.clicked.connect(partial(bg(MainWindow.run_clicked), builtmodel))
                 tree.setItemWidget(item, 1, button)
 
             elements[key] = item
@@ -95,3 +85,18 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         for builtmodel in builtmodels:
             add_builtmodel(tuple(builtmodel.directory.name.split(".")), builtmodel)
+
+    @staticmethod
+    async def run_clicked(builtmodel: BuiltModel) -> None:
+        port = find_free_port()
+        await run_builtmodel(builtmodel, port)
+
+
+async def run_builtmodel(builtmodel: BuiltModel, port: int | None = None) -> None:
+    port_option = () if port is None else (f"-port={port}",)
+
+    process = await create_subprocess_exec(
+        f"{builtmodel.executable}", *port_option, cwd=builtmodel.directory
+    )
+    await process.wait()
+    print(f"{builtmodel.executable} done!")
