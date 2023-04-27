@@ -26,22 +26,22 @@ class Ui_ModelBrowser(object):
         ModelBrowser.resize(400, 300)
         self.verticalLayout = QVBoxLayout(ModelBrowser)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.workDirectoryLabel = QLabel(ModelBrowser)
         self.workDirectoryLabel.setObjectName(u"workDirectoryLabel")
 
-        self.horizontalLayout.addWidget(self.workDirectoryLabel)
+        self.verticalLayout.addWidget(self.workDirectoryLabel)
 
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.reloadPushButton = QPushButton(ModelBrowser)
         self.reloadPushButton.setObjectName(u"reloadPushButton")
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.reloadPushButton.sizePolicy().hasHeightForWidth())
-        self.reloadPushButton.setSizePolicy(sizePolicy)
 
         self.horizontalLayout.addWidget(self.reloadPushButton)
+
+        self.openPushButton = QPushButton(ModelBrowser)
+        self.openPushButton.setObjectName(u"openPushButton")
+
+        self.horizontalLayout.addWidget(self.openPushButton)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -61,6 +61,7 @@ class Ui_ModelBrowser(object):
         ModelBrowser.setWindowTitle(QCoreApplication.translate("ModelBrowser", u"ModelBrowser", None))
         self.workDirectoryLabel.setText(QCoreApplication.translate("ModelBrowser", u"/path/to/OMEdit", None))
         self.reloadPushButton.setText(QCoreApplication.translate("ModelBrowser", u"reload", None))
+        self.openPushButton.setText(QCoreApplication.translate("ModelBrowser", u"open", None))
         ___qtreewidgetitem = self.treeWidget.headerItem()
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("ModelBrowser", u"\u00a0", None));
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("ModelBrowser", u"model", None));
