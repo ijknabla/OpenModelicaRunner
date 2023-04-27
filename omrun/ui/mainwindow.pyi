@@ -8,5 +8,5 @@ class Ui_MainWindow(object):
     centralLayout: QGridLayout
     modelTree: QTreeWidget
     processWidget: QListWidget
-    modelBroswer: ModelBrowser
+    modelBrowser: ModelBrowser
     def setupUi(self, MainWindow: QMainWindow) -> None: ...
