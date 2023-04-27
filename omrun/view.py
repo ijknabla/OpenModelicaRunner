@@ -46,6 +46,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.setupUi(self)
 
         self.workDirectoryUpdated.connect(self.on_workDirectoryUpdated)
+        self.progressUpdated.connect(self.on_progressUpdated)
         self.showMaximized()
 
         self.workDirectoryUpdated.emit(get_omedit_work_directory())
@@ -59,6 +60,17 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         self.modelTree.expandAll()
         self.modelTree.resizeColumnToContents(0)
+
+    def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
+        match status:
+            case "Starting":
+                ...
+            case "Running":
+                ...
+            case "Finished":
+                ...
+            case _:
+                raise NotImplementedError()
 
     def add_builtmodels(self, tree: QTreeWidget, builtmodels: Iterable[BuiltModel]) -> None:
         elements: dict[tuple[str, ...], QTreeWidget | QTreeWidgetItem]
