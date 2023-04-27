@@ -56,7 +56,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="modelBrowser"/>
+   <widget class="ModelBrowser" name="modelBrowser"/>
   </widget>
   <action name="modelBroswerAction">
    <property name="checkable">
@@ -67,6 +67,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ModelBrowser</class>
+   <extends>QWidget</extends>
+   <header>omrun.widget.modelbrowser.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -21,6 +21,8 @@ from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QHeaderVi
     QMenuBar, QSizePolicy, QStatusBar, QTreeWidget,
     QTreeWidgetItem, QWidget)
 
+from omrun.widget.modelbrowser import ModelBrowser
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -55,7 +57,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.modelBrowserDockWidget = QDockWidget(MainWindow)
         self.modelBrowserDockWidget.setObjectName(u"modelBrowserDockWidget")
-        self.modelBrowser = QWidget()
+        self.modelBrowser = ModelBrowser()
         self.modelBrowser.setObjectName(u"modelBrowser")
         self.modelBrowserDockWidget.setWidget(self.modelBrowser)
         MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.modelBrowserDockWidget)
