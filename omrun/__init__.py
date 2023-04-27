@@ -2,14 +2,14 @@ import re
 import socket
 import sys
 from asyncio import Task, get_running_loop
-from collections.abc import Callable, Coroutine, Iterator
+from collections.abc import AsyncIterator, Callable, Coroutine, Iterator
 from contextlib import closing
 from dataclasses import dataclass
 from functools import wraps
 from getpass import getuser
 from pathlib import Path
 from tempfile import gettempdir
-from typing import TYPE_CHECKING, Any, ParamSpec, TypeVar, cast
+from typing import TYPE_CHECKING, Any, AnyStr, ParamSpec, TypeVar, cast
 
 from PySide6.QtCore import Slot
 
@@ -24,6 +24,30 @@ def find_free_port() -> int:
         s.bind(("localhost", 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return cast(int, s.getsockname()[1])
+
+
+async def readlines(
+    read: Callable[[], Coroutine[Any, Any, AnyStr]], keepends: bool = False
+) -> AsyncIterator[AnyStr]:
+    data: AnyStr | None = None
+    async for new_data in _readchunks(read):
+        if data is None:
+            data = new_data
+        else:
+            data += new_data
+
+        *lines, data = data.splitlines(keepends=keepends)
+        for line in lines:
+            yield line  # type: ignore
+
+    yield data  # type: ignore
+
+
+async def _readchunks(read: Callable[[], Coroutine[Any, Any, AnyStr]]) -> AsyncIterator[AnyStr]:
+    data = await read()
+    while data:
+        yield data
+        data = await read()
 
 
 def AsyncSlot(
