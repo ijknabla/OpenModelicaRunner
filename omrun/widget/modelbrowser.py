@@ -24,15 +24,20 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.setupUi(self)
 
         self.workDirectoryChanged.connect(self.on_workDirectoryChanged)
+        self.reloadPushButton.pressed.connect(lambda: self.__apply_tree(self.__workDirectory))
 
     def on_workDirectoryChanged(self, value: Path) -> None:
         self.__workDirectory = value
         self.workDirectoryLabel.setText(str(value))
+        self.__apply_tree(value)
 
+    def __apply_tree(self, directory: Path) -> None:
         self.treeWidget.clear()
         builtmodels = {
             tuple(builtmodel.directory.name.split(".")): builtmodel
-            for builtmodel in chain.from_iterable(map(BuiltModel.from_directory, value.iterdir()))
+            for builtmodel in chain.from_iterable(
+                map(BuiltModel.from_directory, directory.iterdir())
+            )
         }
 
         tree: dict[tuple[str, ...], QTreeWidgetItem] = {}
