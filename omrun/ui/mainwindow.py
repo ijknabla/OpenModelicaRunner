@@ -26,9 +26,9 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
-        self.action_Model_Broswer = QAction(MainWindow)
-        self.action_Model_Broswer.setObjectName(u"action_Model_Broswer")
-        self.action_Model_Broswer.setCheckable(True)
+        self.modelBroswerAction = QAction(MainWindow)
+        self.modelBroswerAction.setObjectName(u"modelBroswerAction")
+        self.modelBroswerAction.setCheckable(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralLayout = QGridLayout(self.centralwidget)
@@ -47,15 +47,15 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 800, 19))
-        self.menu_View = QMenu(self.menubar)
-        self.menu_View.setObjectName(u"menu_View")
+        self.viewMenu = QMenu(self.menubar)
+        self.viewMenu.setObjectName(u"viewMenu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menu_View.menuAction())
-        self.menu_View.addAction(self.action_Model_Broswer)
+        self.menubar.addAction(self.viewMenu.menuAction())
+        self.viewMenu.addAction(self.modelBroswerAction)
 
         self.retranslateUi(MainWindow)
 
@@ -64,10 +64,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.action_Model_Broswer.setText(QCoreApplication.translate("MainWindow", u"&Model Broswer", None))
+        self.modelBroswerAction.setText(QCoreApplication.translate("MainWindow", u"&Model Broswer", None))
         ___qtreewidgetitem = self.modelTree.headerItem()
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"\u00a0", None));
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"model", None));
-        self.menu_View.setTitle(QCoreApplication.translate("MainWindow", u"&View", None))
+        self.viewMenu.setTitle(QCoreApplication.translate("MainWindow", u"&View", None))
     # retranslateUi
 
