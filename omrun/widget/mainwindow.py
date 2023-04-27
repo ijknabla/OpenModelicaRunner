@@ -42,6 +42,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.showMaximized()
 
         self.workDirectoryUpdated.emit(get_omedit_work_directory())
+        self.modelBrowser.modelSelected.connect(bg(self.run_clicked))
 
     def on_workDirectoryUpdated(self, directory: Path) -> None:
         self.modelTree.clear()
