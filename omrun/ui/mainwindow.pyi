@@ -6,7 +6,6 @@ from ..widget.modelbrowser import ModelBrowser
 class Ui_MainWindow(object):
     modelBroswerAction: QAction
     centralLayout: QGridLayout
-    modelTree: QTreeWidget
     processWidget: QListWidget
     modelBrowser: ModelBrowser
     def setupUi(self, MainWindow: QMainWindow) -> None: ...

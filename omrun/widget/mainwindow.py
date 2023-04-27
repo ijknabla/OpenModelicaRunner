@@ -1,22 +1,12 @@
 import re
 from asyncio import create_subprocess_exec
-from collections.abc import Callable, Coroutine, Iterable
-from contextlib import suppress
+from collections.abc import Callable, Coroutine
 from functools import partial
-from itertools import chain
 from pathlib import Path
 from typing import ClassVar
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import (
-    QListWidgetItem,
-    QMainWindow,
-    QProgressBar,
-    QPushButton,
-    QTreeWidget,
-    QTreeWidgetItem,
-    QWidget,
-)
+from PySide6.QtWidgets import QListWidgetItem, QMainWindow, QProgressBar, QWidget
 
 from .. import BuiltModel, bg, find_free_port, get_omedit_work_directory, listen_port, readlines
 from ..ui.mainwindow import Ui_MainWindow
@@ -35,7 +25,6 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         super().__init__(parent=parent, flags=flags)
         self.setupUi(self)
 
-        self.workDirectoryUpdated.connect(self.on_workDirectoryUpdated)
         self.workDirectoryUpdated.connect(self.modelBrowser.workDirectoryChanged.emit)
         self.progressUpdated.connect(self.on_progressUpdated)
         self.progressBars = {}
@@ -43,16 +32,6 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         self.workDirectoryUpdated.emit(get_omedit_work_directory())
         self.modelBrowser.modelSelected.connect(bg(self.run_clicked))
-
-    def on_workDirectoryUpdated(self, directory: Path) -> None:
-        self.modelTree.clear()
-
-        self.add_builtmodels(
-            self.modelTree, chain.from_iterable(map(BuiltModel.from_directory, directory.iterdir()))
-        )
-
-        self.modelTree.expandAll()
-        self.modelTree.resizeColumnToContents(0)
 
     def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
         match status:
@@ -69,33 +48,6 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             case _:
                 raise NotImplementedError()
         bar.setValue(progress)
-
-    def add_builtmodels(self, tree: QTreeWidget, builtmodels: Iterable[BuiltModel]) -> None:
-        elements: dict[tuple[str, ...], QTreeWidget | QTreeWidgetItem]
-        elements = {(): tree}
-
-        def add_builtmodel(
-            key: tuple[str, ...],
-            builtmodel: BuiltModel | None = None,
-        ) -> QTreeWidget | QTreeWidgetItem:
-            with suppress(KeyError):
-                return elements[key]
-
-            parent = add_builtmodel(key[:-1])
-
-            item = QTreeWidgetItem(parent)
-            item.setText(0, key[-1])
-
-            if builtmodel is not None:
-                button = QPushButton()
-                button.clicked.connect(partial(bg(self.run_clicked), builtmodel))
-                tree.setItemWidget(item, 1, button)
-
-            elements[key] = item
-            return item
-
-        for builtmodel in builtmodels:
-            add_builtmodel(tuple(builtmodel.directory.name.split(".")), builtmodel)
 
     async def run_clicked(self, builtmodel: BuiltModel) -> None:
         port = find_free_port()

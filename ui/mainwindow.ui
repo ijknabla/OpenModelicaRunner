@@ -16,20 +16,6 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="centralLayout">
     <item row="0" column="0">
-     <widget class="QTreeWidget" name="modelTree">
-      <column>
-       <property name="text">
-        <string>model</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string> </string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item row="1" column="0">
      <widget class="QListWidget" name="processWidget"/>
     </item>
    </layout>

@@ -16,10 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QHeaderView,
-    QListWidget, QListWidgetItem, QMainWindow, QMenu,
-    QMenuBar, QSizePolicy, QStatusBar, QTreeWidget,
-    QTreeWidgetItem, QWidget)
+from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QListWidget,
+    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
+    QSizePolicy, QStatusBar, QWidget)
 
 from omrun.widget.modelbrowser import ModelBrowser
 
@@ -36,15 +35,10 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralLayout = QGridLayout(self.centralwidget)
         self.centralLayout.setObjectName(u"centralLayout")
-        self.modelTree = QTreeWidget(self.centralwidget)
-        self.modelTree.setObjectName(u"modelTree")
-
-        self.centralLayout.addWidget(self.modelTree, 0, 0, 1, 1)
-
         self.processWidget = QListWidget(self.centralwidget)
         self.processWidget.setObjectName(u"processWidget")
 
-        self.centralLayout.addWidget(self.processWidget, 1, 0, 1, 1)
+        self.centralLayout.addWidget(self.processWidget, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -76,9 +70,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.modelBroswerAction.setText(QCoreApplication.translate("MainWindow", u"&Model Broswer", None))
-        ___qtreewidgetitem = self.modelTree.headerItem()
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"\u00a0", None));
-        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"model", None));
         self.viewMenu.setTitle(QCoreApplication.translate("MainWindow", u"&View", None))
     # retranslateUi
 
