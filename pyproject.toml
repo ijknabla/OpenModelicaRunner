@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-OMRun = "omrun.view:main"
+OMRun = "omrun.__main__:main"
 
 [tool.poetry.dependencies]
 python = "~3.10"

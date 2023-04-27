@@ -16,20 +16,6 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="centralLayout">
     <item row="0" column="0">
-     <widget class="QTreeWidget" name="modelTree">
-      <column>
-       <property name="text">
-        <string>model</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string> </string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item row="1" column="0">
      <widget class="QListWidget" name="processWidget"/>
     </item>
    </layout>
@@ -43,9 +29,74 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="modelBroswerAction"/>
+   </widget>
+   <addaction name="viewMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="modelBrowserDockWidget">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="ModelBrowser" name="modelBrowser"/>
+  </widget>
+  <action name="modelBroswerAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Model Broswer</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ModelBrowser</class>
+   <extends>QWidget</extends>
+   <header>omrun.widget.modelbrowser.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>modelBroswerAction</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>modelBrowserDockWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>28</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelBrowserDockWidget</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>modelBroswerAction</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
