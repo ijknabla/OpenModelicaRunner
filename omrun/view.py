@@ -12,6 +12,7 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
+    QProgressBar,
     QPushButton,
     QTreeWidget,
     QTreeWidgetItem,
@@ -36,6 +37,7 @@ def main() -> None:
 class MainWindow(Ui_MainWindow, QMainWindow):
     progressUpdated: ClassVar[Signal] = Signal(int, int, str)
     workDirectoryUpdated: ClassVar[Signal] = Signal(Path)
+    progressBars: dict[int, QProgressBar]
 
     def __init__(
         self,
@@ -47,6 +49,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
         self.workDirectoryUpdated.connect(self.on_workDirectoryUpdated)
         self.progressUpdated.connect(self.on_progressUpdated)
+        self.progressBars = {}
         self.showMaximized()
 
         self.workDirectoryUpdated.emit(get_omedit_work_directory())
@@ -64,7 +67,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
     def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
         match status:
             case "Starting":
-                ...
+                QProgressBar()
             case "Running":
                 ...
             case "Finished":
