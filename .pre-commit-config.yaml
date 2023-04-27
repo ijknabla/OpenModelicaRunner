@@ -39,3 +39,11 @@ repos:
         -   omrun/ui/mainwindow.py
         language: system
         files: ui/mainwindow.ui
+    -   id: uic-modelbrowser
+        name: Generate code by uic
+        entry: .venv/bin/pyside6-uic
+        args:
+        -   -o
+        -   omrun/ui/modelbrowser.py
+        language: system
+        files: ui/modelbrowser.ui
