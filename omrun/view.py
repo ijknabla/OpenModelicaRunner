@@ -8,7 +8,7 @@ from itertools import chain
 from pathlib import Path
 from typing import ClassVar
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (
     QApplication,
     QListWidgetItem,
@@ -53,7 +53,12 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.progressBars = {}
         self.showMaximized()
 
+        self.modelBroswerAction.triggered.connect(self.on_modelBroserAction_triggered)
         self.workDirectoryUpdated.emit(get_omedit_work_directory())
+
+    @Slot(bool)
+    def on_modelBroserAction_triggered(self, checked: bool) -> None:
+        ...
 
     def on_workDirectoryUpdated(self, directory: Path) -> None:
         self.modelTree.clear()
