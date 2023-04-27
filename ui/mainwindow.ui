@@ -43,8 +43,23 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="action_Model_Broswer"/>
+   </widget>
+   <addaction name="menu_View"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_Model_Broswer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Model Broswer</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
