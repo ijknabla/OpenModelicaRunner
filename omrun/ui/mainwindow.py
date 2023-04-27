@@ -16,10 +16,10 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QListWidget,
-    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
-    QSizePolicy, QStatusBar, QTreeWidget, QTreeWidgetItem,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QHeaderView,
+    QListWidget, QListWidgetItem, QMainWindow, QMenu,
+    QMenuBar, QSizePolicy, QStatusBar, QTreeWidget,
+    QTreeWidgetItem, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -53,6 +53,12 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.modelBrowserDockWidget = QDockWidget(MainWindow)
+        self.modelBrowserDockWidget.setObjectName(u"modelBrowserDockWidget")
+        self.modelBrowser = QWidget()
+        self.modelBrowser.setObjectName(u"modelBrowser")
+        self.modelBrowserDockWidget.setWidget(self.modelBrowser)
+        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.modelBrowserDockWidget)
 
         self.menubar.addAction(self.viewMenu.menuAction())
         self.viewMenu.addAction(self.modelBroswerAction)

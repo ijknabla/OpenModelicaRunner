@@ -52,6 +52,12 @@
    <addaction name="viewMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="modelBrowserDockWidget">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="modelBrowser"/>
+  </widget>
   <action name="modelBroswerAction">
    <property name="checkable">
     <bool>true</bool>
