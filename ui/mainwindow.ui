@@ -96,5 +96,21 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>modelBrowserDockWidget</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>modelBroswerAction</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

@@ -68,6 +68,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.modelBroswerAction.triggered["bool"].connect(self.modelBrowserDockWidget.setVisible)
+        self.modelBrowserDockWidget.visibilityChanged.connect(self.modelBroswerAction.setChecked)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
