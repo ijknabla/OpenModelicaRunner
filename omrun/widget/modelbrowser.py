@@ -9,6 +9,7 @@ from ..ui.modelbrowser import Ui_ModelBrowser
 
 class ModelBrowser(Ui_ModelBrowser, QWidget):
     workDirectoryChanged: ClassVar[Signal] = Signal(Path)
+    __workDirectory: Path
 
     def __init__(
         self,
@@ -18,4 +19,8 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         super().__init__(parent=parent, f=f)
         self.setupUi(self)
 
-        self.workDirectoryChanged.connect(lambda p: self.workDirectoryLabel.setText(str(p)))
+        self.workDirectoryChanged.connect(self.on_workDirectoryChanged)
+
+    def on_workDirectoryChanged(self, value: Path) -> None:
+        self.__workDirectory = value
+        self.workDirectoryLabel.setText(str(value))
