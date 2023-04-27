@@ -4,7 +4,7 @@ from asyncio import set_event_loop
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
-from .widget import MainWindow
+from .widget.mainwindow import MainWindow
 
 
 def main() -> None:
