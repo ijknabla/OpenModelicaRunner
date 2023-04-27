@@ -138,3 +138,7 @@ async def run_builtmodel(builtmodel: BuiltModel, port: int | None = None) -> Non
     )
     await process.wait()
     print(f"{builtmodel.executable} done!")
+
+
+class ModelBrowser(QWidget):
+    ...
