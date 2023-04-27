@@ -47,3 +47,11 @@ repos:
         -   omrun/ui/modelbrowser.py
         language: system
         files: ui/modelbrowser.ui
+    -   id: uic-setupdialog
+        name: Generate code by uic
+        entry: .venv/bin/pyside6-uic
+        args:
+        -   -o
+        -   omrun/ui/setupdialog.py
+        language: system
+        files: ui/setupdialog.ui
