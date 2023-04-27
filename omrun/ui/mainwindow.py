@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         self.modelBroswerAction = QAction(MainWindow)
         self.modelBroswerAction.setObjectName(u"modelBroswerAction")
         self.modelBroswerAction.setCheckable(True)
+        self.modelBroswerAction.setChecked(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralLayout = QGridLayout(self.centralwidget)
