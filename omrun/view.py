@@ -1,6 +1,5 @@
 import re
-import sys
-from asyncio import create_subprocess_exec, set_event_loop
+from asyncio import create_subprocess_exec
 from collections.abc import Callable, Coroutine, Iterable
 from contextlib import suppress
 from functools import partial
@@ -10,7 +9,6 @@ from typing import ClassVar
 
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (
-    QApplication,
     QListWidgetItem,
     QMainWindow,
     QProgressBar,
@@ -19,20 +17,9 @@ from PySide6.QtWidgets import (
     QTreeWidgetItem,
     QWidget,
 )
-from qasync import QEventLoop
 
 from . import BuiltModel, bg, find_free_port, get_omedit_work_directory, listen_port, readlines
 from .ui.mainwindow import Ui_MainWindow
-
-
-def main() -> None:
-    app = QApplication()
-    loop = QEventLoop(app)
-    set_event_loop(loop)
-    with loop:
-        mainwindow = MainWindow()
-        mainwindow.show()
-        sys.exit(app.exec())
 
 
 class MainWindow(Ui_MainWindow, QMainWindow):
