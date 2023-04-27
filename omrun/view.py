@@ -11,6 +11,7 @@ from typing import ClassVar
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QApplication,
+    QListWidgetItem,
     QMainWindow,
     QProgressBar,
     QPushButton,
@@ -67,13 +68,18 @@ class MainWindow(Ui_MainWindow, QMainWindow):
     def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
         match status:
             case "Starting":
-                QProgressBar()
+                item = QListWidgetItem()
+                bar = QProgressBar()
+                self.processWidget.addItem(item)
+                self.processWidget.setItemWidget(item, bar)
+                self.progressBars[port] = bar
             case "Running":
-                ...
+                bar = self.progressBars[port]
             case "Finished":
-                ...
+                bar = self.progressBars[port]
             case _:
                 raise NotImplementedError()
+        bar.setValue(progress)
 
     def add_builtmodels(self, tree: QTreeWidget, builtmodels: Iterable[BuiltModel]) -> None:
         elements: dict[tuple[str, ...], QTreeWidget | QTreeWidgetItem]
@@ -114,7 +120,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
             for match in re.finditer(
                 r"(?P<progress>\d+) (?P<status>[a-zA-Z]+)", line.decode("utf-8")
             ):
-                progress = int(match.group("progress"))
+                progress = 100 * int(match.group("progress")) // 10000
                 status = match.group("status")
                 self.progressUpdated.emit(port, progress, status)
 
