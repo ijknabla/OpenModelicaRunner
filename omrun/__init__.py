@@ -1,13 +1,14 @@
 import re
-import socket
 import sys
-from asyncio import Task, get_running_loop
-from collections.abc import AsyncIterator, Callable, Coroutine, Iterator
-from contextlib import closing
+from asyncio import Task, create_task, get_running_loop
+from asyncio.exceptions import CancelledError
+from collections.abc import AsyncGenerator, AsyncIterator, Callable, Coroutine, Iterator
+from contextlib import asynccontextmanager, suppress
 from dataclasses import dataclass
-from functools import wraps
+from functools import partial, wraps
 from getpass import getuser
 from pathlib import Path
+from socket import AF_INET, SO_REUSEADDR, SOCK_STREAM, SOL_SOCKET, socket
 from tempfile import gettempdir
 from typing import TYPE_CHECKING, Any, AnyStr, ParamSpec, TypeVar, cast
 
@@ -20,10 +21,39 @@ _T = TypeVar("_T")
 
 
 def find_free_port() -> int:
-    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+    with socket(AF_INET, SOCK_STREAM) as s:
         s.bind(("localhost", 0))
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         return cast(int, s.getsockname()[1])
+
+
+@asynccontextmanager
+async def listen_port(
+    port: int,
+    callback: Callable[
+        [Callable[[int], Coroutine[None, None, bytes]]], Coroutine[None, None, None]
+    ],
+) -> AsyncGenerator[None, None]:
+    with socket(AF_INET, SOCK_STREAM) as server:
+        server.setblocking(False)
+        server.bind(("localhost", port))
+        server.listen()
+
+        async def serve() -> None:
+            loop = get_running_loop()
+            while True:
+                client, _ = await loop.sock_accept(server)
+                with client:
+                    client.setblocking(False)
+                    await create_task(callback(partial(loop.sock_recv, client)))
+
+        serve_task = create_task(serve())
+        try:
+            yield None
+        finally:
+            serve_task.cancel()
+            with suppress(CancelledError):
+                await serve_task
 
 
 async def readlines(
