@@ -18,8 +18,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from . import BuiltModel, bg, find_free_port, get_omedit_work_directory, listen_port, readlines
-from .ui.mainwindow import Ui_MainWindow
+from .. import BuiltModel, bg, find_free_port, get_omedit_work_directory, listen_port, readlines
+from ..ui.mainwindow import Ui_MainWindow
 
 
 class MainWindow(Ui_MainWindow, QMainWindow):
