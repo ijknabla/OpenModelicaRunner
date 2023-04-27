@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QPushButton, QTreeWidgetItem, QWidget
 
 from .. import BuiltModel
 from ..ui.modelbrowser import Ui_ModelBrowser
+from .util import make_tree
 
 
 class ModelBrowser(Ui_ModelBrowser, QWidget):
@@ -32,7 +33,6 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.__apply_tree(value)
 
     def __apply_tree(self, directory: Path) -> None:
-        self.treeWidget.clear()
         builtmodels = {
             tuple(builtmodel.directory.name.split(".")): builtmodel
             for builtmodel in chain.from_iterable(
@@ -40,11 +40,8 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
             )
         }
 
-        tree: dict[tuple[str, ...], QTreeWidgetItem] = {}
-        for parts in (parts[:i] for parts in builtmodels for i, _ in enumerate(parts, start=1)):
-            if parts in tree:
-                continue
-            tree[parts] = QTreeWidgetItem(tree.get(parts[:-1], self.treeWidget), [parts[-1]])
+        self.treeWidget.clear()
+        tree = make_tree(self.treeWidget, builtmodels)
 
         for parts, builtmodel in builtmodels.items():
             item: QTreeWidgetItem = tree[parts]
