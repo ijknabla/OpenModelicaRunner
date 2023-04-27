@@ -15,13 +15,21 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QSizePolicy,
+    QTreeWidget, QTreeWidgetItem, QWidget)
 
 class Ui_ModelBrowser(object):
     def setupUi(self, ModelBrowser):
         if not ModelBrowser.objectName():
             ModelBrowser.setObjectName(u"ModelBrowser")
         ModelBrowser.resize(400, 300)
+        self.gridLayout = QGridLayout(ModelBrowser)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.treeWidget = QTreeWidget(ModelBrowser)
+        self.treeWidget.setObjectName(u"treeWidget")
+
+        self.gridLayout.addWidget(self.treeWidget, 0, 0, 1, 1)
+
 
         self.retranslateUi(ModelBrowser)
 
@@ -30,5 +38,8 @@ class Ui_ModelBrowser(object):
 
     def retranslateUi(self, ModelBrowser):
         ModelBrowser.setWindowTitle(QCoreApplication.translate("ModelBrowser", u"ModelBrowser", None))
+        ___qtreewidgetitem = self.treeWidget.headerItem()
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("ModelBrowser", u"\u00a0", None));
+        ___qtreewidgetitem.setText(0, QCoreApplication.translate("ModelBrowser", u"model", None));
     # retranslateUi
 

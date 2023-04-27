@@ -13,6 +13,22 @@
   <property name="windowTitle">
    <string>ModelBrowser</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTreeWidget" name="treeWidget">
+     <column>
+      <property name="text">
+       <string>model</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>&#x00A0;</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
