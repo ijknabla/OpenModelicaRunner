@@ -36,6 +36,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.setupUi(self)
 
         self.workDirectoryUpdated.connect(self.on_workDirectoryUpdated)
+        self.workDirectoryUpdated.connect(self.modelBrowser.workDirectoryChanged.emit)
         self.progressUpdated.connect(self.on_progressUpdated)
         self.progressBars = {}
         self.showMaximized()
