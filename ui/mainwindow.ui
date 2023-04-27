@@ -76,5 +76,22 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>modelBroswerAction</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>modelBrowserDockWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>28</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
