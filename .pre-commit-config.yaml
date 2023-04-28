@@ -31,19 +31,11 @@ repos:
         entry: .venv/bin/pflake8
         language: system
         pass_filenames: false
-    -   id: uic-mainwindow
+    -   id: uic
         name: Generate code by uic
-        entry: .venv/bin/pyside6-uic
+        entry: .venv/bin/python
         args:
-        -   -o
-        -   omrun/ui/mainwindow.py
+        -   .pre-commit/uipy.py
+        -   omrun/ui
         language: system
-        files: ui/mainwindow.ui
-    -   id: uic-modelbrowser
-        name: Generate code by uic
-        entry: .venv/bin/pyside6-uic
-        args:
-        -   -o
-        -   omrun/ui/modelbrowser.py
-        language: system
-        files: ui/modelbrowser.ui
+        files: ui/.*\.ui
