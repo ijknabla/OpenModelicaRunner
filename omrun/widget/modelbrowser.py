@@ -3,6 +3,7 @@ from itertools import chain
 from pathlib import Path
 from typing import ClassVar
 
+from bidict import bidict
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QPushButton, QTreeWidgetItem, QWidget
 
@@ -14,7 +15,7 @@ from .util import make_tree
 class ModelBrowser(Ui_ModelBrowser, QWidget):
     modelSelected: ClassVar[Signal] = Signal(BuiltModel)
 
-    models: dict[tuple[str, ...], BuiltModel]
+    models: bidict[tuple[str, ...], BuiltModel]
 
     def __init__(
         self,
@@ -24,7 +25,7 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         super().__init__(parent=parent, f=f)
         self.setupUi(self)
 
-        self.models = {}
+        self.models = bidict()
 
         self.workDirectoryChanged.connect(lambda d: self.workDirectoryLabel.setText(str(d)))
         self.workDirectoryChanged.connect(self.update_tree)
@@ -47,12 +48,12 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
     __workDirectory: Path
 
     def update_tree(self, directory: Path) -> None:
-        self.models = {
-            tuple(builtmodel.directory.name.split(".")): builtmodel
+        self.models = bidict(
+            (tuple(builtmodel.directory.name.split(".")), builtmodel)
             for builtmodel in chain.from_iterable(
                 map(BuiltModel.from_directory, directory.iterdir())
             )
-        }
+        )
 
         self.treeWidget.clear()
         tree = make_tree(self.treeWidget, self.models)
