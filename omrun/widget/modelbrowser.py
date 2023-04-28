@@ -14,6 +14,8 @@ from .util import make_tree
 class ModelBrowser(Ui_ModelBrowser, QWidget):
     modelSelected: ClassVar[Signal] = Signal(BuiltModel)
 
+    models: dict[tuple[str, ...], BuiltModel]
+
     def __init__(
         self,
         parent: QWidget | None = None,
@@ -21,6 +23,8 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
     ) -> None:
         super().__init__(parent=parent, f=f)
         self.setupUi(self)
+
+        self.models = {}
 
         self.workDirectoryChanged.connect(lambda d: self.workDirectoryLabel.setText(str(d)))
         self.workDirectoryChanged.connect(self.update_tree)
@@ -43,7 +47,7 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
     __workDirectory: Path
 
     def update_tree(self, directory: Path) -> None:
-        builtmodels = {
+        self.models = {
             tuple(builtmodel.directory.name.split(".")): builtmodel
             for builtmodel in chain.from_iterable(
                 map(BuiltModel.from_directory, directory.iterdir())
@@ -51,12 +55,12 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         }
 
         self.treeWidget.clear()
-        tree = make_tree(self.treeWidget, builtmodels)
+        tree = make_tree(self.treeWidget, self.models)
 
-        for parts, builtmodel in builtmodels.items():
-            item: QTreeWidgetItem = tree[parts]
+        for path, model in self.models.items():
+            item: QTreeWidgetItem = tree[path]
             button = QPushButton("setup")
-            button.pressed.connect(partial(self.modelSelected.emit, builtmodel))
+            button.pressed.connect(partial(self.modelSelected.emit, model))
             self.treeWidget.setItemWidget(item, 1, button)
 
         self.treeWidget.expandAll()
