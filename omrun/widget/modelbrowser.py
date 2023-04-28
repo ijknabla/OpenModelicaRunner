@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QMenu, QPushButton, QTreeWidgetItem, QWidget
 
 from .. import BuiltModel
 from ..ui.modelbrowser import Ui_ModelBrowser
+from .setupdialog import SetupDialog
 from .util import get_tree_path, make_tree
 
 
@@ -85,7 +86,13 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         menu = QMenu(self)
 
         setupAction = QAction("Setup", self)
-        setupAction.triggered.connect(lambda: print(model))
+
+        @setupAction.triggered.connect
+        def setup() -> None:
+            print(model)
+            dialog = SetupDialog(self)
+            dialog.exec()
+
         menu.addAction(setupAction)
 
         menu.exec(self.mapToGlobal(point))
