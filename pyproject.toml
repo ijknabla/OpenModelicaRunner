@@ -15,6 +15,7 @@ OMRun = "omrun.__main__:main"
 python = "~3.10"
 pyside6 = "^6"
 qasync = "^0.24.0"
+bidict = "^0.22.1"
 
 
 [tool.poetry.group.dev.dependencies]
