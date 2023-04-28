@@ -3,6 +3,7 @@ from itertools import chain
 from pathlib import Path
 from typing import ClassVar
 
+from bidict import bidict
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QPushButton, QTreeWidgetItem, QWidget
 
@@ -12,9 +13,9 @@ from .util import make_tree
 
 
 class ModelBrowser(Ui_ModelBrowser, QWidget):
-    workDirectoryChanged: ClassVar[Signal] = Signal(Path)
     modelSelected: ClassVar[Signal] = Signal(BuiltModel)
-    __workDirectory: Path
+
+    models: bidict[tuple[str, ...], BuiltModel]
 
     def __init__(
         self,
@@ -24,29 +25,43 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         super().__init__(parent=parent, f=f)
         self.setupUi(self)
 
-        self.workDirectoryChanged.connect(self.on_workDirectoryChanged)
-        self.reloadPushButton.pressed.connect(lambda: self.__apply_tree(self.__workDirectory))
+        self.models = bidict()
 
-    def on_workDirectoryChanged(self, value: Path) -> None:
+        self.workDirectoryChanged.connect(lambda d: self.workDirectoryLabel.setText(str(d)))
+        self.workDirectoryChanged.connect(self.update_tree)
+
+        self.reloadPushButton.pressed.connect(
+            lambda: self.workDirectoryChanged.emit(self.workDirectory)
+        )
+
+    workDirectoryChanged: ClassVar[Signal] = Signal(Path)
+
+    @property
+    def workDirectory(self) -> Path:
+        return self.__workDirectory
+
+    @workDirectory.setter
+    def workDirectory(self, value: Path) -> None:
         self.__workDirectory = value
-        self.workDirectoryLabel.setText(str(value))
-        self.__apply_tree(value)
+        self.workDirectoryChanged.emit(value)
 
-    def __apply_tree(self, directory: Path) -> None:
-        builtmodels = {
-            tuple(builtmodel.directory.name.split(".")): builtmodel
+    __workDirectory: Path
+
+    def update_tree(self, directory: Path) -> None:
+        self.models = bidict(
+            (tuple(builtmodel.directory.name.split(".")), builtmodel)
             for builtmodel in chain.from_iterable(
                 map(BuiltModel.from_directory, directory.iterdir())
             )
-        }
+        )
 
         self.treeWidget.clear()
-        tree = make_tree(self.treeWidget, builtmodels)
+        tree = make_tree(self.treeWidget, self.models)
 
-        for parts, builtmodel in builtmodels.items():
-            item: QTreeWidgetItem = tree[parts]
+        for path, model in self.models.items():
+            item: QTreeWidgetItem = tree[path]
             button = QPushButton("setup")
-            button.pressed.connect(partial(self.modelSelected.emit, builtmodel))
+            button.pressed.connect(partial(self.modelSelected.emit, model))
             self.treeWidget.setItemWidget(item, 1, button)
 
         self.treeWidget.expandAll()

@@ -114,7 +114,7 @@ def get_omedit_work_directory() -> Path:
         return Path(gettempdir()) / f"OpenModelica_{getuser()}" / "OMEdit"
 
 
-@dataclass
+@dataclass(frozen=True)
 class BuiltModel:
     executable: Path
     init_xml: Path

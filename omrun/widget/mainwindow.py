@@ -2,6 +2,7 @@ import re
 from asyncio import create_subprocess_exec
 from collections.abc import Callable, Coroutine
 from functools import partial
+from pathlib import Path
 from typing import ClassVar
 
 from PySide6.QtCore import Qt, Signal
@@ -17,9 +18,13 @@ class MainWindow(Ui_MainWindow, QMainWindow):
 
     def __init__(
         self,
+        workDirectory: Path | None = None,
         parent: QWidget | None = None,
         flags: Qt.WindowType = Qt.WindowType(0),
     ) -> None:
+        if workDirectory is None:
+            workDirectory = get_omedit_work_directory()
+
         super().__init__(parent=parent, flags=flags)
         self.setupUi(self)
 
@@ -27,7 +32,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.progressBars = {}
         self.showMaximized()
 
-        self.modelBrowser.workDirectoryChanged.emit(get_omedit_work_directory())
+        self.modelBrowser.workDirectory = workDirectory
         self.modelBrowser.modelSelected.connect(bg(self.run_clicked))
 
     def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
