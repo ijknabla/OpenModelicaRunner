@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
 
 from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
 
@@ -18,3 +18,14 @@ def make_tree(
         result[path] = item
 
     return result
+
+
+def get_tree_path(item: QTreeWidgetItem) -> tuple[str, ...]:
+    return tuple(part.text(0) for part in _iter_tree_parts(item))
+
+
+def _iter_tree_parts(item: QTreeWidgetItem) -> Iterator[QTreeWidgetItem]:
+    parent = item.parent()
+    if parent is not None:
+        yield from _iter_tree_parts(parent)
+    yield item
