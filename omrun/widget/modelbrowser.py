@@ -14,19 +14,6 @@ from .util import make_tree
 class ModelBrowser(Ui_ModelBrowser, QWidget):
     modelSelected: ClassVar[Signal] = Signal(BuiltModel)
 
-    workDirectoryChanged: ClassVar[Signal] = Signal(Path)
-
-    @property
-    def workDirectory(self) -> Path:
-        return self.__workDirectory
-
-    @workDirectory.setter
-    def workDirectory(self, value: Path) -> None:
-        self.__workDirectory = value
-        self.workDirectoryChanged.emit(value)
-
-    __workDirectory: Path
-
     def __init__(
         self,
         parent: QWidget | None = None,
@@ -41,6 +28,19 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.reloadPushButton.pressed.connect(
             lambda: self.workDirectoryChanged.emit(self.workDirectory)
         )
+
+    workDirectoryChanged: ClassVar[Signal] = Signal(Path)
+
+    @property
+    def workDirectory(self) -> Path:
+        return self.__workDirectory
+
+    @workDirectory.setter
+    def workDirectory(self, value: Path) -> None:
+        self.__workDirectory = value
+        self.workDirectoryChanged.emit(value)
+
+    __workDirectory: Path
 
     def update_tree(self, directory: Path) -> None:
         builtmodels = {
