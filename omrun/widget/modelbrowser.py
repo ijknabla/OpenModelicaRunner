@@ -4,18 +4,20 @@ from pathlib import Path
 from typing import ClassVar
 
 from bidict import bidict
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QPushButton, QTreeWidgetItem, QWidget
+from PySide6.QtCore import QPoint, Qt, Signal
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QMenu, QPushButton, QTreeWidgetItem, QWidget
 
 from .. import BuiltModel
 from ..ui.modelbrowser import Ui_ModelBrowser
-from .util import make_tree
+from .util import get_tree_path, make_tree
 
 
 class ModelBrowser(Ui_ModelBrowser, QWidget):
     modelSelected: ClassVar[Signal] = Signal(BuiltModel)
 
     models: bidict[tuple[str, ...], BuiltModel]
+    modelPath: tuple[str, ...]
 
     def __init__(
         self,
@@ -26,6 +28,10 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.setupUi(self)
 
         self.models = bidict()
+        self.modelPath = ()
+        self.treeWidget.currentItemChanged.connect(
+            lambda item, previous: setattr(self, "modelPath", get_tree_path(item))
+        )
 
         self.workDirectoryChanged.connect(lambda d: self.workDirectoryLabel.setText(str(d)))
         self.workDirectoryChanged.connect(self.update_tree)
@@ -33,6 +39,9 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.reloadPushButton.pressed.connect(
             lambda: self.workDirectoryChanged.emit(self.workDirectory)
         )
+
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.contextMenu)
 
     workDirectoryChanged: ClassVar[Signal] = Signal(Path)
 
@@ -66,3 +75,17 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
 
         self.treeWidget.expandAll()
         self.treeWidget.resizeColumnToContents(0)
+
+    def contextMenu(self, point: QPoint) -> None:
+        try:
+            model = self.models[self.modelPath]
+        except KeyError:
+            return
+
+        menu = QMenu(self)
+
+        setupAction = QAction("Setup", self)
+        setupAction.triggered.connect(lambda: print(model))
+        menu.addAction(setupAction)
+
+        menu.exec(self.mapToGlobal(point))
