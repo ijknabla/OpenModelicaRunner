@@ -36,13 +36,13 @@ class ModelBrowser(Ui_ModelBrowser, QWidget):
         self.setupUi(self)
 
         self.workDirectoryChanged.connect(lambda d: self.workDirectoryLabel.setText(str(d)))
-        self.workDirectoryChanged.connect(self.__apply_tree)
+        self.workDirectoryChanged.connect(self.update_tree)
 
         self.reloadPushButton.pressed.connect(
             lambda: self.workDirectoryChanged.emit(self.workDirectory)
         )
 
-    def __apply_tree(self, directory: Path) -> None:
+    def update_tree(self, directory: Path) -> None:
         builtmodels = {
             tuple(builtmodel.directory.name.split(".")): builtmodel
             for builtmodel in chain.from_iterable(
