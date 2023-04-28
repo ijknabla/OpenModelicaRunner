@@ -32,8 +32,7 @@ class MainWindow(Ui_MainWindow, QMainWindow):
         self.progressBars = {}
         self.showMaximized()
 
-        self.modelBrowser.workDirectoryChanged.emit(workDirectory)
-
+        self.modelBrowser.workDirectory = workDirectory
         self.modelBrowser.modelSelected.connect(bg(self.run_clicked))
 
     def on_progressUpdated(self, port: int, progress: int, status: str) -> None:
